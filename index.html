@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Cressy Daily · 2026-10-17</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+:root{
+  --bg:#0d1117;--card:#161b22;--card2:#1c2128;--border:#21262d;
+  --text:#e6edf3;--muted:#8b949e;--accent:#f0883e;--accent2:#58a6ff;
+  --green:#3fb950;--serif:"Noto Serif SC","Source Han Serif SC","思源宋体",Georgia,serif;
+  --sans:"Noto Sans SC","Source Han Sans SC","思源黑体","PingFang SC",-apple-system,sans-serif;
+  --mono:"SF Mono",Menlo,Consolas,monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;
+ line-height:1.85;padding-bottom:env(safe-area-inset-bottom);overflow-x:hidden}
+.wrap{max-width:680px;margin:0 auto;padding:0 20px}
+
+/* header */
+.hero{background:linear-gradient(160deg,#1a2332 0%,#0d1117 78%);
+ padding:calc(46px + env(safe-area-inset-top)) 20px 30px;border-bottom:1px solid var(--border)}
+.hero .in{max-width:680px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:11px;margin-bottom:16px}
+.logo{width:36px;height:36px;border-radius:10px;
+ background:linear-gradient(135deg,var(--accent),#d4643a);
+ display:flex;align-items:center;justify-content:center;font-size:19px}
+.brand-txt{font-family:var(--serif);font-weight:600;font-size:19px;letter-spacing:.3px}
+.brand-sub{font-size:11.5px;color:var(--muted);letter-spacing:1.6px;margin-top:2px}
+.date-line{color:var(--muted);font-size:13px;display:flex;gap:14px;flex-wrap:wrap;margin-top:14px}
+.date-line b{color:var(--accent);font-weight:500}
+
+/* 概览数字 */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+.stat{background:rgba(255,255,255,.035);border:1px solid var(--border);
+ border-radius:12px;padding:14px 12px;text-align:center}
+.stat .n{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--accent)}
+.stat .l{font-size:11px;color:var(--muted);margin-top:3px}
+
+/* 方向标签 */
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:16px 20px;
+ border-bottom:1px solid var(--border);position:sticky;top:0;
+ background:rgba(13,17,23,.96);backdrop-filter:blur(12px);z-index:20;
+ scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:9px 15px;border-radius:20px;font-size:13.5px;
+ background:var(--card);border:1px solid var(--border);color:var(--muted);
+ cursor:pointer;transition:.18s;white-space:nowrap;font-weight:400;
+ min-height:38px;display:flex;align-items:center;gap:5px}
+.tab.on{background:rgba(240,136,62,.15);border-color:rgba(240,136,62,.5);color:var(--accent);font-weight:500}
+.tab .cnt{font-size:11px;opacity:.75;font-family:var(--mono)}
+
+/* 面板 */
+.panel{display:none;padding:24px 0 50px}
+.panel.on{display:block}
+.track-head{margin-bottom:22px}
+.track-title{font-family:var(--serif);font-size:24px;font-weight:600;margin-bottom:8px}
+.track-src{font-size:12.5px;color:var(--muted)}
+.track-src code{font-family:var(--mono);background:var(--card);padding:2px 7px;border-radius:5px;font-size:11.5px}
+
+/* 分区标题 */
+.sec{display:flex;align-items:center;gap:10px;margin:34px 0 18px;
+ padding-bottom:10px;border-bottom:1px solid var(--border)}
+.sec h2{font-family:var(--serif);font-size:18px;font-weight:600}
+.sec .badge{font-size:11px;padding:3px 9px;border-radius:11px;
+ background:rgba(88,166,255,.13);color:var(--accent2);font-weight:400}
+.sec .badge.cn{background:rgba(240,136,62,.13);color:var(--accent)}
+
+/* 论文卡片 */
+.paper{background:var(--card);border:1px solid var(--border);border-radius:15px;
+ padding:22px 22px 20px;margin-bottom:16px;position:relative}
+.p-head{display:flex;gap:11px;align-items:flex-start;margin-bottom:11px}
+.p-num{flex:0 0 24px;height:24px;border-radius:7px;background:rgba(88,166,255,.14);
+ color:var(--accent2);font-size:12px;font-weight:500;display:flex;
+ align-items:center;justify-content:center;font-family:var(--mono);margin-top:3px}
+.p-head h3{font-family:var(--serif);font-size:17px;font-weight:600;line-height:1.65;flex:1}
+.p-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:8px}
+.p-meta a{color:var(--accent2);text-decoration:none;border-bottom:1px solid rgba(88,166,255,.3)}
+.p-authors{font-size:12.5px;color:var(--muted);margin-bottom:12px;line-height:1.6}
+
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px}
+.tag{font-size:11px;padding:3px 9px;border-radius:9px;
+ background:rgba(139,148,158,.1);color:#a8b3bf;border:1px solid var(--border)}
+
+/* 音频条 */
+.audio-bar{background:var(--card2);border:1px solid var(--border);border-radius:11px;
+ padding:12px 14px;margin-bottom:15px}
+.audio-bar .audio-label{font-size:11.5px;color:var(--accent);margin-bottom:8px;letter-spacing:.6px}
+.audio-bar audio{width:100%;height:44px;outline:none;border-radius:8px}
+
+/* 摘要 */
+.abstract p{font-size:15.5px;color:#c9d1d9;line-height:1.95;margin-bottom:12px;text-align:justify}
+.abstract p:last-child{margin-bottom:0}
+.muted{color:var(--muted);font-size:13.5px;font-style:italic}
+
+/* 中英对照 */
+.bilingual .pair{border-left:2px solid var(--border);padding-left:15px;margin-bottom:17px}
+.bilingual .pair:last-child{margin-bottom:0}
+.bilingual .en{font-family:Georgia,"Times New Roman",serif;font-size:15px;
+ color:#c9d1d9;line-height:1.75;margin-bottom:7px}
+.bilingual .zh{font-size:14.5px;color:#9fb0c2;line-height:1.9}
+
+/* 空状态 */
+.empty{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty .ic{font-size:40px;margin-bottom:14px;opacity:.5}
+.empty p{font-size:14px;line-height:1.9}
+.empty .sub{font-size:12.5px;margin-top:8px;opacity:.7}
+
+footer{text-align:center;color:var(--muted);font-size:12px;
+ padding:34px 20px calc(40px + env(safe-area-inset-bottom));
+ border-top:1px solid var(--border);margin-top:20px;line-height:1.9}
+
+@media(max-width:600px){
+  .wrap,.hero .in{padding-left:18px;padding-right:18px}
+  .hero{padding-left:18px;padding-right:18px}
+  .track-title{font-size:21px}
+  .p-head h3{font-size:16px}
+  .abstract p{font-size:15.5px;line-height:1.95}
+  .paper{padding:19px 17px 17px}
+  .tabs{padding:14px 18px}
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="in">
+    <div class="brand">
+      <div class="logo">📚</div>
+      <div>
+        <div class="brand-txt">Cressy Daily</div>
+        <div class="brand-sub">ACADEMIC TRACKING</div>
+      </div>
+    </div>
+    <div class="date-line">
+      <span>📅 2026年10月17日</span>
+      <span>🔍 <b>1</b> 个研究方向</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="n">44</div><div class="l">中文新文献</div></div>
+      <div class="stat"><div class="n">543</div><div class="l">英文新文献</div></div>
+      <div class="stat"><div class="n">1</div><div class="l">今日更新方向</div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs"><button class="tab on" onclick="showTab('algo_mgmt',this)">⚙️ 算法管理 / 算法控制 <span class="cnt">587</span></button></nav>
+
+<main class="wrap">
+
+        <section class="panel on" id="panel-algo_mgmt">
+          <div class="track-head">
+            <div class="track-title">⚙️ 算法管理 / 算法控制</div>
+            <div class="track-src">源项目：<code>04 算法协商国社科</code></div>
+          </div>
+          
+            <div class="sec"><h2>中文文献</h2>
+              <span class="badge cn">知网 · 44 篇新</span></div>
+            
+    <article class="paper" id="b524f443bb5c2cd2">
+      <div class="p-head">
+        <span class="p-num">1</span>
+        <h3>感知算法控制对零工工作者主动服务行为的影响研究</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 中小企业管理与科技</span>
+        <span>📅 2026</span>
+      </div>
+      <div class="p-authors">付向阳</div>
+      <div class="tags"><span class='tag'>感知算法控制</span><span class='tag'>挑战性评估</span><span class='tag'>阻碍性评估</span><span class='tag'>主动服务行为</span><span class='tag'>职业使命感</span></div>
+      
+        <div class="audio-bar">
+          <div class="audio-label">🎧 精读音频</div>
+          <audio controls preload="none" src="audio/2026-10-17_algo_mgmt_cn1.mp3"></audio>
+        </div>
+      <div class="abstract"><p>随着平台经济和数字技术的快速发展，平台广泛运用算法进行任务分配与奖惩管理，给零工工作者带来相应的任务压力，进而影响其服务行为。</p><p>论文基于压力认知评估理论，引入挑战性和阻碍性评估作为中介变量，职业使命感作为调节变量，检验了感知算法控制对零工工作者主动服务行为的影响。</p><p>研究发现，感知算法控制通过挑战性评估路径正向影响主动服务行为，通过阻碍性评估路径抑制其主动服务行为，揭示算法控制的差异化路径，职业使命感增强挑战性评估路径的正向影响，削弱阻碍性评估路径的负向影响。</p></div>
+    </article>
+    <article class="paper" id="205482f3a50c575b">
+      <div class="p-head">
+        <span class="p-num">2</span>
+        <h3>感知算法控制对平台零工工作者服务破坏行为双刃剑效应</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 软科学</span>
+        <span>📅 2026</span>
+      </div>
+      <div class="p-authors">侯烜方;郑文丽;程皓;刘蕴琦</div>
+      <div class="tags"><span class='tag'>感知算法控制</span><span class='tag'>平台零工工作者</span><span class='tag'>服务破坏行为</span><span class='tag'>角色宽度自我效能感</span><span class='tag'>双刃剑模型</span></div>
+      
+        <div class="audio-bar">
+          <div class="audio-label">🎧 精读音频</div>
+          <audio controls preload="none" src="audio/2026-10-17_algo_mgmt_cn2.mp3"></audio>
+        </div>
+      <div class="abstract"><p>基于压力认知评价理论，构建了感知算法控制对平台零工工作者服务破坏行为的双刃剑模型。</p><p>通过对212份两阶段数据分析发现：感知算法控制一方面通过提升平台零工工作者挑战性评估减少其服务破坏行为，另一方面又会通过提升其阻碍性评估以增加服务破坏行为；</p><p>角色宽度自我效能感正向调节感知算法控制与挑战性评估的关系，负向调节感知算法控制与阻碍性评估的关系，并构成被调节的中介效应。</p><p>异质性检验结果表明：感知算法控制对服务破坏行为的影响效应因日工作时长而异，对高时长工作者其抑制作用更为显著。</p></div>
+    </article>
+    <article class="paper" id="1104190a42d211f3">
+      <div class="p-head">
+        <span class="p-num">3</span>
+        <h3>感知算法控制对零工工作者工作绩效的双刃剑影响及其工作不安全感的调节作用:基于JD-R模型的视角</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 中国人力资源开发</span>
+        <span>📅 2025</span>
+      </div>
+      <div class="p-authors">汪鑫;陈丽莉;张惠琴</div>
+      <div class="tags"><span class='tag'>感知算法控制</span><span class='tag'>工作重塑</span><span class='tag'>情绪耗竭</span><span class='tag'>工作绩效</span></div>
+      
+        <div class="audio-bar">
+          <div class="audio-label">🎧 精读音频</div>
+          <audio controls preload="none" src="audio/2026-10-17_algo_mgmt_cn3.mp3"></audio>
+        </div>
+      <div class="abstract"><p>随着人工智能技术的飞速发展,平台算法逐步取代了传统组织中的管理者职能,突出表现为运用数字技术精确捕捉零工工作者的劳动信息,实现对劳动过程的约束、指导与评估。</p><p>然而,现有研究关于感知算法控制如何通过具体的心理机制和工作行为调整而影响零工工作者工作绩效还不系统。</p><p>本研究基于工作要求-资源模型,以350名网约车司机为研究对象,发现:（1）感知算法控制可以促进零工工作者积极开展工作重塑,提高绩效表现;（2）感知算法控制也会造成零工工作者的情绪耗竭,抑制工作绩效;（3）工作不安全感既会强化感知算法控制对工作重塑的正向影响,也会强化其对情绪耗竭的正向影响,并以“双刃剑”的形式调节感知算法控制分别通过工作重塑和情绪耗竭对工作绩效的正向和负向间接影响。</p><p>这些发现丰富了算法控制领域的实证研究,有助于提高对这一新兴管理实践的全面影响的理解,也为零工平台如何在数字化转型背景下有效管理员工、促进员工心理健康与提升工作绩效提供理论依据和实践指导。</p></div>
+    </article>
+    <article class="paper" id="b4c7350f9c38ec64">
+      <div class="p-head">
+        <span class="p-num">4</span>
+        <h3>零工工作者感知算法控制对工作压力和逆算法行为的影响研究</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 现代管理科学</span>
+        <span>📅 2025</span>
+      </div>
+      <div class="p-authors">倪艳;柳文轩</div>
+      <div class="tags"><span class='tag'>感知算法控制</span><span class='tag'>逆算法行为</span><span class='tag'>成就动机</span><span class='tag'>工作压力</span></div>
+      
+      <div class="abstract"><p>算法控制作为数字时代的新型管理模式，正在全球企业组织中得到广泛的应用。</p><p>尤其在零工经济领域，算法的深度渗透已引发零工工作者劳动过程的系统性变革。</p><p>以自我调节理论与劳动过程理论的控制抵制框架为基础，在外卖骑手群体中检验零工工作者感知算法控制与逆算法行为之间的非线性关联，并揭示上述关系的内在机制和边界条件。</p><p>基于585份有效问卷调查数据发现，零工工作者感知算法控制与工作压力、逆算法行为呈“U”形关系，工作压力在感知算法控制与逆算法行为的“U”形关系中起中介作用；</p><p>成就动机分别调节感知算法控制与工作压力、逆算法行为的“U”形关系。</p></div>
+    </article>
+    <article class="paper" id="86df5df2d5df2591">
+      <div class="p-head">
+        <span class="p-num">5</span>
+        <h3>感知算法控制对零工工作者离职倾向的“双刃剑”影响——基于资源保存理论视角</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 商业经济与管理</span>
+        <span>📅 2024</span>
+      </div>
+      <div class="p-authors">陈万明;徐国长;马欢欢</div>
+      <div class="tags"><span class='tag'>感知算法控制</span><span class='tag'>离职倾向</span><span class='tag'>工作倦怠</span><span class='tag'>工作投入</span><span class='tag'>谋生工作价值观</span></div>
+      
+      <div class="abstract"><p>算法控制是数字零工平台的显著特征，零工工作者对算法控制的感知差异会影响其工作态度及行为，但鲜有研究关注感知算法控制对零工工作者离职倾向的影响机制。</p><p>基于资源保存理论，通过对430名零工工作者的三阶段时间滞后调查，探究感知算法控制通过工作倦怠和工作投入对零工工作者离职倾向的双路径作用机制，以及谋生工作价值观的调节作用。</p><p>研究发现：工作倦怠和工作投入在感知算法控制与离职倾向关系间发挥双重中介作用，即感知算法控制既可以通过提升零工工作者工作倦怠，增强其离职倾向，又可以通过提高零工工作者工作投入，降低其离职倾向；</p><p>谋生工作价值观负向调节感知算法控制与工作倦怠的关系，而正向调节感知算法控制与工作投入的关系；</p><p>此外，谋生工作价值观还调节了工作倦怠、工作投入在感知算法控制与离职倾向之间的中介作用。</p><p>研究结论丰富了零工经济领域员工离职倾向的理论研究，为数字零工平台的算法控制实践提供了启示。</p></div>
+    </article>
+    <article class="paper" id="2827ddbba313a396">
+      <div class="p-head">
+        <span class="p-num">6</span>
+        <h3>感知算法控制对零工工作者职业倦怠的影响：工作压力的中介作用</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 中国劳动</span>
+        <span>📅 2024</span>
+      </div>
+      <div class="p-authors">马金平;李潘;魏琪润;李刚琴</div>
+      <div class="tags"><span class='tag'>感知算法控制</span><span class='tag'>职业倦怠</span><span class='tag'>零工工作者</span><span class='tag'>工作压力</span></div>
+      
+      <div class="abstract"><p>在数字技术和平台经济飞速发展背景下，外卖员、快递员、网约司机等零工工作的灵活性和自主性吸引了大量从业者，近年来，平台企业为提高服务质量，创造更大的商业价值，使用算法对零工工作者进行智能化控制的动机日益增强，给零工工作者带来许多影响。</p><p>基于两轮问卷调查获取的313份样本数据，本研究证实了零工工作者感知算法控制、工作压力与职业倦怠之间的正向传导机制，并对情绪稳定性、工作-家庭支持的调节作用进行了检验。</p><p>本研究不但丰富了感知算法控制领域的研究，还从个体特征视角和工作要求-资源视角完善了职业倦怠形成机制理论；</p><p>研究结论为缓解零工工作者的职业倦怠，促进平台和零工工作者和谐共赢提供了实践启示。</p></div>
+    </article>
+    <article class="paper" id="3f441fa72696a546">
+      <div class="p-head">
+        <span class="p-num">7</span>
+        <h3>零工工作者感知算法控制对工作投入的影响机制研究——基于认知和情感的双路径模型</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 商业经济与管理</span>
+        <span>📅 2024</span>
+      </div>
+      <div class="p-authors">张兰霞;李佳敏;毛孟雨</div>
+      <div class="tags"><span class='tag'>感知算法控制</span><span class='tag'>工作投入</span><span class='tag'>算法透明度</span><span class='tag'>资源保存理论</span></div>
+      
+      <div class="abstract"><p>算法的快速发展及其在管理活动中的应用正改变着员工的工作方式，给组织管理实践带来了新的挑战。</p><p>目前却少有研究关注员工感知算法控制对其工作投入的影响机制。</p><p>文章依据资源保存理论，基于认知和情感的视角，构建了感知算法控制对工作投入影响的双路径模型，并检验了认知负荷和情绪耗竭的中介作用以及算法透明度的调节作用。</p><p>针对397名零工工作者两阶段的调查分析发现：感知算法控制显著负向影响工作投入；</p><p>认知负荷和情绪耗竭不仅在感知算法控制和工作投入之间起中介作用，而且在感知算法控制和工作投入之间起链式中介作用；</p><p>算法透明度不仅调节了感知算法控制与认知负荷和情绪耗竭间的关系，还调节了认知负荷和情绪耗竭的中介作用。</p></div>
+    </article>
+    <article class="paper" id="d28e43fae971a302">
+      <div class="p-head">
+        <span class="p-num">8</span>
+        <h3>感知算法控制的双刃剑效应对零工工作者情绪耗竭的影响:基于合法性判断视角</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 系统管理学报</span>
+        <span>📅 2024</span>
+      </div>
+      <div class="p-authors">孙锐;袁圆;朱秋华;陈丽君;赵坤</div>
+      <div class="tags"><span class='tag'>感知算法控制</span><span class='tag'>合法性判断</span><span class='tag'>情绪耗竭</span><span class='tag'>人工智能风险观念</span></div>
+      
+      <div class="abstract"><p>基于279份来自零工工作者的问卷调查数据,以公平、隐私、自主合法性判断为中介变量,以人工智能风险观念为调节变量,探讨感知算法控制的双刃剑效应对零工工作者情绪耗竭的影响。</p><p>研究结果表明:合法性判断负向影响零工工作者情绪耗竭且完全中介了感知算法控制对情绪耗竭的影响;感知算法规范指导通过公平合法性判断负向影响零工工作者情绪耗竭,感知算法追踪评估通过隐私合法性判断正向影响零工工作者情绪耗竭,感知算法行为约束通过自主合法性判断正向影响零工工作者情绪耗竭;人工智能风险观念强化了感知算法追踪评估对隐私合法性判断的负向影响。</p></div>
+    </article>
+    <article class="paper" id="23b1fb588e105e83">
+      <div class="p-head">
+        <span class="p-num">9</span>
+        <h3>好算法,坏算法?算法逻辑下零工工作者的过度劳动研究</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 管理工程学报</span>
+        <span>📅 2024</span>
+      </div>
+      <div class="p-authors">裴嘉良;刘善仕;张志朋;谢宇</div>
+      <div class="tags"><span class='tag'>零工工作者</span><span class='tag'>感知算法控制</span><span class='tag'>工作自主性</span><span class='tag'>工作不安全感</span><span class='tag'>过度劳动</span></div>
+      
+      <div class="abstract"><p>天然具有“最优解”属性的算法技术使平台对零工工作者效率的控制达到了前所未有的水平。</p><p>在算法逻辑的管理控制下,数字零工群体面临着高强度、高压力和高风险的过度劳动困境。</p><p>本研究基于工作要求-资源模型,探讨了算法控制何时以及如何影响零工工作者过度劳动。</p><p>问卷调查发现(N=1004),零工工作者感知算法控制的三个维度有着差异化的影响效应:首先,零工工作者感知到的算法追踪评估会通过抑制工作自主性,进而导致过度劳动;其次,零工工作者感知到的算法行为约束会通过诱发工作不安全感,进而导致过度劳动;最后,零工工作者感知到的算法规范指导作为一种个体能够感知到的技术支持资源,不仅调节了算法追踪评估与工作自主性的关系、算法行为约束与工作不安全感的关系,还调节了算法追踪评估通过工作自主性影响过度劳动、算法行为约束通过工作不安全感影响过度劳动的间接效应。</p><p>研究发现有助于学界辩证地认识算法控制这一新兴管理实践,并为我国零工经济市场中和谐劳动关系的有序构建、劳动者合法权益的保障提供实践启示。</p></div>
+    </article>
+    <article class="paper" id="cce5550a0166237f">
+      <div class="p-head">
+        <span class="p-num">10</span>
+        <h3>感知算法控制对零工工作者安全绩效的非线性影响</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 管理科学</span>
+        <span>📅 2023</span>
+      </div>
+      <div class="p-authors">范志灵;刘善仕;裴嘉良;年鹏翔;张建平</div>
+      <div class="tags"><span class='tag'>零工工作者</span><span class='tag'>感知算法控制</span><span class='tag'>安全绩效</span><span class='tag'>自我损耗</span><span class='tag'>特质自我控制</span><span class='tag'>自我控制力量模型</span></div>
+      
+      <div class="abstract"><p>算法控制下零工工作者的不安全事件频发，安全问题凸显，引发了政府、社会和学术界对“算法取中”问题的高度关注。</p><p>已有围绕算法控制对零工工作者工作态度和行为影响的研究存在争议，并且忽视了算法控制强度的变化，尚无法清晰地揭示算法控制与安全绩效的关系，在一定程度上限制了政府和平台出台相关政策和对策的针对性和有效性。</p><p>基于自我控制力量模型，从个体感知视角切入，探索零工工作者感知算法控制对其安全绩效的非线性影响；</p><p>并将个体特质因素纳入研究模型，考察特质自我控制对感知算法控制与安全绩效之间关系的调节作用，以此构建一个被调节的曲线间接效应模型。</p><p>以华南地区一家网约车平台的司机群体作为调研对象，共获得多来源、多阶段的351份实地调查数据，并采用Spss21.0和Mplus 8.0进行数据分析。</p><p>研究结果表明，感知算法控制与安全绩效呈倒U形关系，自我损耗起中介作用。</p></div>
+    </article>
+    <article class="paper" id="eb801b6909cc97a6">
+      <div class="p-head">
+        <span class="p-num">11</span>
+        <h3>感知算法控制对零工工作幸福感的影响研究</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 时代经贸</span>
+        <span>📅 2026</span>
+      </div>
+      <div class="p-authors">董祥婷</div>
+      <div class="tags"><span class='tag'>感知算法控制</span><span class='tag'>工作幸福感</span><span class='tag'>工作压力</span><span class='tag'>社会支持</span><span class='tag'>工作时长</span></div>
+      
+      <div class="abstract"><p>平台经济快速发展背景下，算法控制深刻重塑零工劳动者劳动形态，厘清感知算法控制对零工群体工作幸福感的内在作用机制，对保障零工劳动者权益、增进其福祉具有重要意义。</p><p>本文基于JDCS模型构建有调节的中介效应模型，以207名外卖平台零工从业者为调研对象开展问卷调查，运用SPSS 26.0及PROCESS插件进行信度分析、效度分析、相关分析、回归分析及Bootstrap中介效应检验。</p><p>研究结果表明，感知算法控制对工作幸福感具有显著负向影响；</p><p>工作压力在二者之间起部分中介作用；</p><p>工作时长正向调节感知算法控制与工作压力的关系；</p><p>社会支持负向调节工作压力与工作幸福感的关系。</p></div>
+    </article>
+    <article class="paper" id="243e05313c44d49b">
+      <div class="p-head">
+        <span class="p-num">12</span>
+        <h3>算法控制下零工工作者自我领导对工作行为的双元影响机理研究</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 管理评论</span>
+        <span>📅 2026</span>
+      </div>
+      <div class="p-authors">侯烜方;刘蕴琦;陈武;蔡心瑜;程皓</div>
+      <div class="tags"><span class='tag'>零工工作者</span><span class='tag'>自我领导</span><span class='tag'>工作行为</span><span class='tag'>算法控制</span><span class='tag'>案例研究</span></div>
+      
+      <div class="abstract"><p>面对平台算法技术的精准管理，如何通过自我领导干预工作表现成为探析零工工作者行为多面性的关键。</p><p>本研究采用基于扎根理论的案例研究方法，构建了算法控制下零工工作者自我领导对工作行为的双元影响机理。</p><p>研究发现，算法控制下零工工作者自我领导包括学习导向、情绪调节、行为调整、自我激励、思维建构五大策略，划分为认知情绪、行为激励、思想建构三大发展阶段，自我责任和工作压力在自我领导影响工作行为的过程中具有中介作用。</p><p>本研究不仅丰富了算法控制下零工工作者自我领导策略的结构内涵，还为平台组织在算法背景下加强零工工作者的行为管理提供理论参考。</p></div>
+    </article>
+          
+            <div class="sec"><h2>English Papers</h2>
+              <span class="badge">WoS · 543 new</span></div>
+            
+    <article class="paper en-paper">
+      <div class="p-head">
+        <span class="p-num">1</span>
+        <h3>Algorithmic management practices, trust, and gig-worker continuance: A mixed-methods study of platform work</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 TECHNOLOGY IN SOCIETY</span>
+        <span>📅 2026</span>
+        <a href="https://doi.org/10.1016/j.techsoc.2026.103394" target="_blank" rel="noopener">DOI ↗</a>
+      </div>
+      <div class="p-authors">Mustafa, Sohaib;Mansour, Sari</div>
+      
+        <div class="audio-bar">
+          <div class="audio-label">🎧 中英对照音频</div>
+          <audio controls preload="none" src="audio/2026-10-17_algo_mgmt_en1.mp3"></audio>
+        </div>
+      <div class="abstract bilingual">
+            <div class="pair">
+              <div class="en">The gig economy&#x27;s reliance on algorithmic management systems necessitates understanding how distinct practices influence worker retention.</div>
+              <div class="zh">零工经济对算法管理系统的依赖，使得理解不同实践如何影响工作者留存成为必要。</div>
+            </div>
+            <div class="pair">
+              <div class="en">This study examines how five algorithmic practices (compensation, goal setting, monitoring, performance rating, and scheduling) shape gig workers&#x27; intention to continue as gig workers, mediated by trust in the platform.</div>
+              <div class="zh">本研究考察五种算法实践（薪酬、目标设定、监控、绩效评级和排班）如何通过平台信任的中介作用，塑造零工工作者继续作为零工工作者的意愿。</div>
+            </div>
+            <div class="pair">
+              <div class="en">Grounded in social exchange theory and algorithmic management theory, the research employs an explanatory-sequential design, drawing on survey data from 790 gig workers across China, Pakistan, Turkey, and Australia, and conducting in-depth interviews with 40 participants (10 from each country).</div>
+              <div class="zh">本研究以社会交换理论和算法管理理论为基础，采用解释性序贯设计，基于来自中国、巴基斯坦、土耳其和澳大利亚790名零工工作者的调查数据，并对40名参与者（每个国家10名）进行了深度访谈。</div>
+            </div>
+            <div class="pair">
+              <div class="en">Quantitative results reveal that performance rating and scheduling significantly enhance trust, while compensation has no direct effect.</div>
+              <div class="zh">定量结果表明，绩效评级和排班显著增强信任，而薪酬没有直接影响。</div>
+            </div>
+            <div class="pair">
+              <div class="en">Trust mediates the effects of goal setting, monitoring and control, performance rating, and scheduling on platform-anchored continuance intention, while the additional mediation assessment indicates complementary/partial mediation rather than a trust-only pathway.</div>
+              <div class="zh">信任在目标设定、监控与控制、绩效评级和排班对平台锚定持续意愿的影响中起中介作用，而额外的中介评估表明存在互补性/部分中介，而非仅通过信任路径发挥作用。</div>
+            </div>
+            <div class="pair">
+              <div class="en">Qualitative insights corroborate these findings, highlighting transparency in goal setting and flexible scheduling as key trust drivers, while exposing compensation opacity as a trust-undermining factor that does not directly influence retention.</div>
+              <div class="zh">定性研究结果印证了上述发现，强调目标设定的透明性和灵活的排班是信任的关键驱动因素，同时揭示薪酬不透明是削弱信任的因素，但并不直接影响留存。</div>
+            </div>
+            <div class="pair">
+              <div class="en">Theoretically, the findings show that algorithmic management operates as a multidimensional set of practices with differentiated trust-formation and continuance implications; practically, results indicate that platforms should prioritize explainable performance metrics, transparent goal-setting systems, flexibility-preserving scheduling architectures, and accountable compensation procedures to support fair and sustainable platform work.</div>
+              <div class="zh">在理论层面，研究结果表明算法管理作为一组多维实践发挥作用，具有差异化的信任形成和持续参与意涵；在实践层面，结果表明平台应优先考虑可解释的绩效指标、透明的目标设定系统、保持灵活性的排班架构以及可问责的薪酬程序，以支持公平和可持续的平台工作。</div>
+            </div></div>
+    </article>
+    <article class="paper en-paper">
+      <div class="p-head">
+        <span class="p-num">2</span>
+        <h3>Perceived Algorithmic Control and Work Engagement in Platform Gig Work: Asymmetric Pathways via Role Stress and Emotional Exhaustion</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 BEHAVIORAL SCIENCES</span>
+        <span>📅 2026</span>
+        <a href="https://doi.org/10.3390/bs16081392" target="_blank" rel="noopener">DOI ↗</a>
+      </div>
+      <div class="p-authors">Shi, Chunna;Zhang, Di;Ma, Junping;Hou, Jianping;Cao, Li;Yang, Yong</div>
+      
+        <div class="audio-bar">
+          <div class="audio-label">🎧 中英对照音频</div>
+          <audio controls preload="none" src="audio/2026-10-17_algo_mgmt_en2.mp3"></audio>
+        </div>
+      <div class="abstract bilingual">
+            <div class="pair">
+              <div class="en">Algorithmic management is central to platform gig work, but its distinct forms of control may relate differently to worker strain.</div>
+              <div class="zh">算法管理是平台零工工作的核心，但其不同形式的控制可能与员工压力存在不同的关联。</div>
+            </div>
+            <div class="pair">
+              <div class="en">We examine these relationships in food delivery, a typical form of platform gig work.</div>
+              <div class="zh">我们在外卖配送——平台零工工作的一种典型形式——中考察了这些关系。</div>
+            </div>
+            <div class="pair">
+              <div class="en">In this setting, algorithms continuously allocate tasks, track performance, evaluate workers, and shape behavior.</div>
+              <div class="zh">在这一情境中，算法持续分配任务、追踪绩效、评估工作者并塑造行为。</div>
+            </div>
+            <div class="pair">
+              <div class="en">The Stressor-Strain-Outcome (S-S-O) model provides the overarching framework.</div>
+              <div class="zh">压力源—压力—结果（S-S-O）模型提供了总体框架。</div>
+            </div>
+            <div class="pair">
+              <div class="en">The Job Demands-Resources (JD-R) perspective explains why the three control dimensions may show different associations, while cognitive appraisal theory provides a supplementary lens.</div>
+              <div class="zh">工作需求—资源（JD-R）视角解释了三种控制维度为何可能呈现不同的关联，而认知评价理论则提供了补充性视角。</div>
+            </div>
+            <div class="pair">
+              <div class="en">Specifically, the study links standardized guidance, tracking evaluation, and behavioral constraints to work engagement through role stress and emotional exhaustion, with overall social support as a moderator.</div>
+              <div class="zh">具体而言，本研究将标准化指导、追踪评估和行为约束通过角色压力和情绪耗竭与工作投入相联系，并以总体社会支持作为调节变量。</div>
+            </div>
+            <div class="pair">
+              <div class="en">Survey data from 608 food-delivery workers were analyzed using partial least squares structural equation modeling (PLS-SEM) with 5000 bootstrap resamples.</div>
+              <div class="zh">研究采用偏最小二乘结构方程模型（PLS-SEM）对608名外卖配送工作者的调查数据进行分析，并进行5000次Bootstrap重抽样。</div>
+            </div>
+            <div class="pair">
+              <div class="en">Standardized guidance was negatively associated with role stress and emotional exhaustion, whereas tracking evaluation and behavioral constraints were positively associated with both.</div>
+              <div class="zh">标准化指导与角色压力和情绪耗竭呈负相关，而追踪评估和行为约束与二者均呈正相关。</div>
+            </div>
+            <div class="pair">
+              <div class="en">Role stress and emotional exhaustion each carried significant indirect associations with work engagement; the serial indirect associations were significant but small.</div>
+              <div class="zh">角色压力和情绪耗竭各自与工作投入之间存在显著的间接关联；链式中介关联显著但效应量较小。</div>
+            </div>
+            <div class="pair">
+              <div class="en">Overall social support strengthened the positive associations of tracking evaluation and behavioral constraints with both strain variables.</div>
+              <div class="zh">总体社会支持增强了追踪评估和行为约束与两个压力变量的正相关关系。</div>
+            </div>
+            <div class="pair">
+              <div class="en">For standardized guidance, however, higher support strengthened, rather than weakened, the negative associations with strain.</div>
+              <div class="zh">然而，对于标准化指导而言，较高的支持增强而非削弱了其与压力的负相关关系。</div>
+            </div>
+            <div class="pair">
+              <div class="en">Predictive assessment, control-variable models, and covariance-based SEM sensitivity analyses produced broadly consistent findings.</div>
+              <div class="zh">预测评估、控制变量模型以及基于协方差的结构方程模型敏感性分析产生了广泛一致的发现。</div>
+            </div>
+            <div class="pair">
+              <div class="en">These results show that distinct forms of algorithmic control relate differently to strain. B</div>
+              <div class="zh">这些结果表明，不同形式的算法控制与压力的关联方式各不相同。</div>
+            </div></div>
+    </article>
+    <article class="paper en-paper">
+      <div class="p-head">
+        <span class="p-num">3</span>
+        <h3>The Influence of Algorithmic Control on Gig Drivers&#x27; Coping Behavior in Ride-Hailing Platforms</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 E-BUSINESS: NEW CHALLENGES AND OPPORTUNITIES FOR DIGITAL-ENABLED INTELLIGENT FUTURE, PT III, WHICEB 2024</span>
+        <span>📅 2024</span>
+        <a href="https://doi.org/10.1007/978-3-031-60324-2_28" target="_blank" rel="noopener">DOI ↗</a>
+      </div>
+      <div class="p-authors">Li, Yize;Tang, Jian;Li, Xuefeng;Zhou, Xinxue</div>
+      
+      <div class="abstract bilingual"><div class="pair"><div class="en">The use of algorithmic control is commonplace in gig economy platforms. Algorithms may direct, evaluate, or discipline gig workers to enforce their compliance, or conversely, trigger their reactance. This paper explores the impact of algorithmic control on ride-hailing drivers&#x27; coping behavior. Based on the legitimacy process model, we develop a research model that links perceived algorithmic control to gig drivers&#x27; compliance and workaround behaviors. Using survey data from 197 ride-hailing drivers, we find that perceived algorithmic control positively affects fairness and privacy judgment. Fairness judgment has a positive impact on compliance behavior, and privacy judgment has a negative impact on workaround behavior. The paper discusses theoretical and practical implications.</div></div></div>
+    </article>
+    <article class="paper en-paper">
+      <div class="p-head">
+        <span class="p-num">4</span>
+        <h3>Stressed or happy - or both? Nuancing gig workers&#x27; experiences with platform work</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 ECONOMIC AND INDUSTRIAL DEMOCRACY</span>
+        <span>📅 2026</span>
+        <a href="https://doi.org/10.1177/0143831X251366931" target="_blank" rel="noopener">DOI ↗</a>
+      </div>
+      <div class="p-authors">Weidenstedt, Linda;Palmtag, Eva-Lisa;Leick, Birgit;Cropley, Mark</div>
+      
+      <div class="abstract bilingual"><div class="pair"><div class="en">This study refines the understanding of gig workers&#x27; experiences by showing that stress and job satisfaction can be parallel rather than mutually exclusive outcomes of gig work. By &#x27;gig work&#x27; we mean piecemeal work using digital apps and platforms as part of the job. Using international survey data (N = 2385), we examine how demographic factors, socio-economic circumstances and work intensity are associated with both stress and job satisfaction of gig workers. Our results show that gig work can be both stressful and satisfying, with high work pace and physical activity enhancing satisfaction without increasing stress. These findings challenge the assumption that by default precarity leads to dissatisfaction, and they underscore the need to measure both stress and satisfaction of gig work. The exploratory study contributes to extant research on platform work by offering a nuanced perspective on gig workers&#x27; well-being, with implications for platform design and policy to improve working conditions in the gig economy.</div></div></div>
+    </article>
+    <article class="paper en-paper">
+      <div class="p-head">
+        <span class="p-num">5</span>
+        <h3>How perceived algorithmic control shapes psychological distress among gig workers</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 SOCIAL BEHAVIOR AND PERSONALITY</span>
+        <span>📅 2026</span>
+        <a href="https://doi.org/10.2224/sbp.16410" target="_blank" rel="noopener">DOI ↗</a>
+      </div>
+      <div class="p-authors">Ning, Zibing;Chen, Yuxing;Fan, Yang;He, Shengyu</div>
+      
+      <div class="abstract bilingual"><div class="pair"><div class="en">In platform labor, algorithmic management monitors the performance of gig workers, and structures how they receive tasks and understand their role. In this study we examined the psychological consequences of perceived algorithmic control for gig workers&#x27;well-being. We proposed that perceived algorithmic control would increase psychological distress by reducing workers&#x27; sense of work meaning and by weakening their trust in public institutions. Using data obtained in a two-wave survey of 463 gig workers in five Chinese cities, we tested a moderated chain mediation model. The results indicated that work meaninglessness and institutional distrust sequentially mediated the relationship between perceived algorithmic control and psychological distress. Furthermore, regulatory unresponsiveness intensified the effect of institutional distrust on distress. These findings highlight how meaning making and perceived institutional support shape emotional strain in platform work, suggesting that responsive governance and improving transparency are essential to sustaining gig workers&#x27;well-being.</div></div></div>
+    </article>
+    <article class="paper en-paper">
+      <div class="p-head">
+        <span class="p-num">6</span>
+        <h3>Enhancing Work Engagement in the Gig Economy: Evidence from Platform Workers</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 SUSTAINABILITY</span>
+        <span>📅 2026</span>
+        <a href="https://doi.org/10.3390/su18052501" target="_blank" rel="noopener">DOI ↗</a>
+      </div>
+      <div class="p-authors">Wen, Yue;Lv, Benfu;Liu, Jie</div>
+      
+      <div class="abstract bilingual"><div class="pair"><div class="en">Work engagement is pivotal for service quality and the long-term viability of platform businesses, yet its micro-level drivers remain insufficiently understood in algorithmically managed gig work. Drawing on self-regulation, social exchange, organizational justice, and algorithmic governance perspectives, this study develops an integrative framework linking workers&#x27; self-management, perceived organizational support, organizational justice, and perceived algorithmic control to work engagement. We surveyed 292 platform-based gig workers in China using an online questionnaire. Hierarchical regressions and robustness checks using structural equation models show that all four antecedents are positively associated with engagement; when considered jointly, perceived algorithmic control, organizational support, and organizational justice remain significant, whereas the incremental association of self-management becomes weaker. Facet-level analyses further indicate that self-improvement is the key self-management mechanism; supervisor, coworker, and climate support all contribute; distributive, procedural, and interactional justice are all positively associated; and the algorithmic process </div></div></div>
+    </article>
+    <article class="paper en-paper">
+      <div class="p-head">
+        <span class="p-num">7</span>
+        <h3>Voice in the algorithmic era: how perceived algorithmic control influences gig workers&#x27; voice behavior</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 FRONTIERS IN PSYCHOLOGY</span>
+        <span>📅 2026</span>
+        <a href="https://doi.org/10.3389/fpsyg.2025.1637658" target="_blank" rel="noopener">DOI ↗</a>
+      </div>
+      <div class="p-authors">Liang, Ting;Zhang, Yufei;Xiang, Dan;Zhu, Lingtong</div>
+      
+      <div class="abstract bilingual"><div class="pair"><div class="en">Existing studies have focused on gig workers&#x27; voice behavior and the mechanisms through which it is expressed via official and unofficial channels, the underlying logic of voice behavior generation, particularly its operational pathways under algorithmic control remains under-investigated. Drawing on fairness heuristic theory, this paper proposes a moderated mediation model to explore the effect of perceived algorithmic control on gig workers&#x27; voice behavior and its boundary condition. Based on the questionnaire data of 260 gig workers, the empirical results indicate that perceived algorithmic control significantly and positively predicts gig workers&#x27; voice behavior by enhancing their perception of algorithmic fairness. Furthermore, voice endorsement moderates the relationship between perception of algorithmic fairness and voice behavior. Complementing these findings, in-depth interviews with 22 gig workers provide a more nuanced understanding of how individuals construct fairness perceptions under algorithmic control and how these perceptions inform their decisions to engage in voice behavior.</div></div></div>
+    </article>
+    <article class="paper en-paper">
+      <div class="p-head">
+        <span class="p-num">8</span>
+        <h3>Algorithmic management and gig worker well-being: unpacking the roles of job autonomy, precarity and union instrumentality</h3>
+      </div>
+      <div class="p-meta">
+        <span>📖 PERSONNEL REVIEW</span>
+        <span>📅 2026</span>
+        <a href="https://doi.org/10.1108/PR-03-2024-0230" target="_blank" rel="noopener">DOI ↗</a>
+      </div>
+      <div class="p-authors">Zha, Xuanqi;Hu, Enhua;Shan, Hongmei;Huang, Lin;Han, Mingyan</div>
+      
+      <div class="abstract bilingual"><div class="pair"><div class="en">Purpose This study investigates the mediating roles of job precarity and job autonomy, and the moderating role of union instrumentality, in the relationship between Algorithmic Management (AM) and gig workers&#x27; well-being.Design/methodology/approach Building upon the Job Demands-Resources (JD-R) theory, this study examines how AM affects gig workers&#x27; well-being through job precarity and job autonomy, with these effects moderated by union instrumentality. Employing three-wave data collected from 639 gig workers, this study conducted confirmatory factor analysis to assess the discriminant and convergent validity of the measures for AM, job precarity, job autonomy, well-being and union instrumentality. Meanwhile, bootstrapping tests were carried out to ascertain the direct, indirect and conditional indirect effects.Findings Results indicated that AM was negatively associated with gig workers&#x27; well-being, with job precarity and job autonomy mediating this relationship. Union instrumentality moderated the relationship between AM and job precarity and job autonomy. Specifically, the indirect effect of AM on gig workers&#x27; well-being, via job precarity and job autonomy, was diminished with h</div></div></div>
+    </article>
+        </section>
+</main>
+
+<footer>
+  <p>Cressy Daily · 学术追踪</p>
+  <p>知网 + Web of Science · 每日自动检索</p>
+  <p style="margin-top:10px;opacity:.6">已经推送过的文献不会重复出现</p>
+</footer>
+
+<script>
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  const p=document.getElementById('panel-'+id);
+  if(p)p.classList.add('on');
+  if(el)el.classList.add('on');
+  // 停止其他面板音频
+  document.querySelectorAll('audio').forEach(a=>{if(!p||!p.contains(a))a.pause()});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
